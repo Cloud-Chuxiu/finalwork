@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "motor.h"
+#include "step.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,7 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+Motor_t motor;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -92,12 +93,46 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_TIM_Base_Start_IT(&htim1);
+  HAL_TIM_Base_Start(&htim2);
+  __HAL_TIM_SET_COUNTER(&htim2,0);
+  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
+  HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_1);
+  HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_2);
+
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //控制函数预设
+    // angle_ctrl(motor,1);
+    // HAL_Delay(100);
+    // step_set(1);
+    // HAL_Delay(100);
+    // angle_ctrl(motor,1);
+    // HAL_Delay(100);
+    // step_set(1);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -145,7 +180,14 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+//TIM1定时器中断
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  if(htim->Instance == TIM1)
+  {
+      motor.pid_flag = 1;
+  }
+}
 /* USER CODE END 4 */
 
 /**

@@ -13,10 +13,11 @@ void PID_init(PID_t *pid)
     pid->error[1] = 0;
     pid->output = 0;
     pid->outputMax = 200;
-    pid->outputMin = 0;
+    pid->outputMin = 5;
  
 }
 
+//位置式pid
 void PID_Calc_p(PID_t *pid)
 {
     pid->cur_error = pid->ref - pid->fdb;
@@ -38,6 +39,7 @@ void PID_Calc_p(PID_t *pid)
     }
 }
 
+//增量式pid
 void PID_Calc(PID_t *pid)
 {
     pid->cur_error = pid->ref - pid->fdb;

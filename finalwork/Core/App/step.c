@@ -14,9 +14,9 @@ void step_dir_set(uint8_t dir)
     HAL_GPIO_WritePin(GPIOB, ENA_Pin, dir);
 }
 
-void step_set(uint32_t round)
+void step_set(float round)
 {
-    for(uint32_t i = 0; i < round * 400 * 2; i++)
+    for(uint32_t i = 0; i < (uint32_t)round * 400 * 2; i++)
     {
         HAL_GPIO_TogglePin(GPIOB, PUL_Pin);
         delay_us(100);
