@@ -111,24 +111,22 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    // __HAL_TIM_SET_COUNTER(&htim2,0);
-    // Motor_Init(&motor);
-    // Motor_Enable(&motor);
-    // Motor_control(&motor);
-    // motor.motor_dir = CLOCKWISE;
-    // dir_set(&motor);
-    // angle_ctrl(&motor, 1.00);
-    // Motor_Disable(&motor);
-    // Motor_control(&motor);
+    __HAL_TIM_SET_COUNTER(&htim2,0);
+    Motor_Init(&motor);
+    Motor_Enable(&motor);
+    Motor_control(&motor);
+    motor.motor_dir = CLOCKWISE;
+    dir_set(&motor);
+    angle_ctrl(&motor, 1.00);
+    Motor_Disable(&motor);
+    Motor_control(&motor);
 
-    
-    HAL_GPIO_WritePin(GPIOA, STBY_Pin, 1);
-    HAL_GPIO_WritePin(GPIOA, AIN1_Pin, 1);
-    HAL_GPIO_WritePin(GPIOA, AIN2_Pin, 0);
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1 ,600);
-    while(1);
-    
-    
+
+    // HAL_GPIO_WritePin(GPIOA, STBY_Pin, 1);
+    // HAL_GPIO_WritePin(GPIOA, AIN1_Pin, 1);
+    // HAL_GPIO_WritePin(GPIOA, AIN2_Pin, 0);
+    // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1 ,600);
+    // while(1);
     
     
     
@@ -143,7 +141,9 @@ int main(void)
     
     
     
-    //���ƺ���Ԥ��
+    
+    
+    //转动顺序预设
     // angle_ctrl(motor,1);
     // HAL_Delay(100);
     // step_set(1);
