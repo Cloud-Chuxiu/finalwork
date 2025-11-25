@@ -100,14 +100,33 @@ int main(void)
   HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_1);
   HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_2);
 
+  Motor_Init(&motor);
 
-
+  step_init();
+  step_dir_set(0);
+  step_enable();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // __HAL_TIM_SET_COUNTER(&htim2,0);
+    // Motor_Init(&motor);
+    // Motor_Enable(&motor);
+    // Motor_control(&motor);
+    // motor.motor_dir = CLOCKWISE;
+    // dir_set(&motor);
+    // angle_ctrl(&motor, 1.00);
+    // Motor_Disable(&motor);
+    // Motor_control(&motor);
+
+    
+    HAL_GPIO_WritePin(GPIOA, STBY_Pin, 1);
+    HAL_GPIO_WritePin(GPIOA, AIN1_Pin, 1);
+    HAL_GPIO_WritePin(GPIOA, AIN2_Pin, 0);
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1 ,600);
+    while(1);
     
     
     
@@ -124,7 +143,7 @@ int main(void)
     
     
     
-    //¿ØÖÆº¯ÊýÔ¤Éè
+    //ï¿½ï¿½ï¿½Æºï¿½ï¿½ï¿½Ô¤ï¿½ï¿½
     // angle_ctrl(motor,1);
     // HAL_Delay(100);
     // step_set(1);
@@ -180,7 +199,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-//TIM1¶¨Ê±Æ÷ÖÐ¶Ï
+//TIM1ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ð¶ï¿½
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if(htim->Instance == TIM1)
