@@ -74,7 +74,7 @@ void positionServo(float ref, Motor_t *motor)
     PID_Calc(&motor->motor_speedpid);
    
     //打印参数
-    //printf("%.3f,%.3f,%.3f\r\n",ref * 360,motor->motor_pospid.fdb * 180,motor->motor_pospid.output);
+    printf("%.3f,%.3f,%.3f,%.3f\r\n",ref * 360,motor->motor_pospid.fdb * 180,motor->motor_pospid.output,motor->motor_speedpid.output);
    
     // if(motor->motor_speedpid.output > 0)
     // {
