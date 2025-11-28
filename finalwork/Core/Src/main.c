@@ -119,11 +119,12 @@ int main(void)
     Motor_control(&motor);
     motor.motor_dir = CLOCKWISE;
     dir_set(&motor);
-    
-    angle_ctrl(&motor, 2.00);
+    angle_ctrl(&motor, 1.00);
     Motor_Disable(&motor);
     Motor_control(&motor);
+    
 
+    
 
     // HAL_GPIO_WritePin(GPIOA, STBY_Pin, 1);
     // HAL_GPIO_WritePin(GPIOA, AIN1_Pin, 1);

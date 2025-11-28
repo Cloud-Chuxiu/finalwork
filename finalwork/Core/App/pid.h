@@ -22,5 +22,5 @@ typedef struct{
 void PID_init(PID_t *pid);
 void PID_Calc_p(PID_t *pid);
 void PID_Calc(PID_t *pid);
-
+void PID_Set(PID_t *pid, float kp, float ki, float kd);
 

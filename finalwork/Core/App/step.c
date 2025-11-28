@@ -3,7 +3,7 @@
 //步进电机初始化
 void step_init()
 {
-    HAL_GPIO_WritePin(GPIOB, ENA_Pin, 1);
+    HAL_GPIO_WritePin(GPIOB, ENA_Pin, 0);
     HAL_GPIO_WritePin(GPIOB, DIR_Pin, 0);
     HAL_GPIO_WritePin(GPIOB, PUL_Pin, 0);
 }
@@ -11,6 +11,8 @@ void step_init()
 void step_enable()
 {
     HAL_GPIO_WritePin(GPIOB,ENA_Pin, 0);
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7, 0);
+
 }
 
 
@@ -25,8 +27,8 @@ void step_set(float round)
     for(uint32_t i = 0; i < (uint32_t)round * 400 * 2; i++)
     {
         HAL_GPIO_TogglePin(GPIOB, PUL_Pin);
-        //delay_us(500);
-        HAL_Delay(1);
+        delay_us(500);
+        //HAL_Delay(1);
     }
 }
 

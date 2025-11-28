@@ -5,6 +5,7 @@
 #define RELOADVALUE 65535
 #define MOTOR_SPEED_RE 30
 #define PULSE_PRE_ROUND 13
+#define DEATH_ZONE 3
 
 
 typedef struct {

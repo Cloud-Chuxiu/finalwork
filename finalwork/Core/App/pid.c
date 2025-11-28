@@ -1,8 +1,9 @@
 #include "pid.h"
 
+//PID初始化
 void PID_init(PID_t *pid)
 {
-    pid->KP = 20.0;
+    pid->KP = 0;
     pid->KI = 0;
     pid->KD = 0;
     pid->fdb = 0;
@@ -16,6 +17,16 @@ void PID_init(PID_t *pid)
     pid->outputMin = 5;
  
 }
+
+//PID参数设定
+void PID_Set(PID_t *pid, float kp, float ki, float kd)
+{
+    pid->KP = kp;
+    pid->KI = ki;
+    pid->KD = kd;
+}
+
+
 
 //位置式pid
 void PID_Calc_p(PID_t *pid)
@@ -56,6 +67,8 @@ void PID_Calc_p(PID_t *pid)
 //     }
 // }
 
+
+//增量式PID
 void PID_Calc(PID_t *pid)
 {
     pid->cur_error = pid->ref - pid->fdb;

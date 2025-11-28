@@ -14,6 +14,9 @@ void Motor_Init(Motor_t *motor)
        motor->last_count = 0;
        PID_init(&motor->motor_pospid);
        PID_init(&motor->motor_speedpid);
+       //设置两环pid的参数
+       PID_Set(&motor->motor_pospid, 15, 0.01, 1);  // KP  KI  KD
+       PID_Set(&motor->motor_speedpid, 15, 0.01, 1);  // KP  KI  KD
        motor->TIM_PWMHandle = htim1;
        motor->TIM_EncoderHandle = htim2;
        motor->TIM_PWM_CH = TIM_CHANNEL_1;
@@ -77,11 +80,9 @@ void positionServo(float ref, Motor_t *motor)
     //打印参数
     printf("%.3f,%.3f,%.3f\r\n",ref* 360,motor->motor_pospid.fdb * 360,motor->motor_pospid.output);
    
-    // if(motor->motor_speedpid.output > 0)
-    // {
-    //     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1 ,motor->motor_speedpid.output);
-    // }
-    
+    //死区控制
+
+
     //顺时针为正，逆时针为负
     if(motor->motor_speedpid.output > 0)
     {
