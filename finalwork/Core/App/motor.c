@@ -70,11 +70,12 @@ void positionServo(float ref, Motor_t *motor)
     //PID_Calc_p(&motor->motor_pospid);
 
     motor->motor_speedpid.ref = motor->motor_pospid.output; //位置pid的输出结果作为速度pid期望
-    motor->motor_speedpid.fdb = motor->motor_speedpid.output; //速度pid的反馈值取上次输出（仅控制角度无需精确）
+    motor->motor_speedpid.fdb = motor->actual_speed; //速度pid的反馈值取上次输出（仅控制角度无需精确）
     PID_Calc(&motor->motor_speedpid);
+    
    
     //打印参数
-    printf("%.3f,%.3f,%.3f,%.3f\r\n",ref * 360,motor->motor_pospid.fdb * 180,motor->motor_pospid.output,motor->motor_speedpid.output);
+    printf("%.3f,%.3f,%.3f\r\n",ref* 360,motor->motor_pospid.fdb * 360,motor->motor_pospid.output);
    
     // if(motor->motor_speedpid.output > 0)
     // {
@@ -108,18 +109,21 @@ void speedServo(float ref, Motor_t *motor)
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, motor->motor_speedpid.output);
 }
 
-//获取电机实时角度
-float get_angle(float pre_angle, uint8_t dir)
+//获取电机实时角度 & 速度
+float get_angle(Motor_t *motor, uint8_t dir)
 {
     //获取原始计数
     float raw_angle = (short)__HAL_TIM_GET_COUNTER(&htim2); //(short) ?
+    __HAL_TIM_SET_COUNTER(&htim2,0);
     //防止溢出计算
     if(raw_angle > 32768)
     {
         raw_angle = 65535 - raw_angle;
     }
     //将计数改为角度
-    raw_angle /= (30 * 13 * 2);
+    raw_angle =  raw_angle  /  (30 * 13 * 2) ;
+    motor->actual_angle += raw_angle;
+    motor->actual_speed = raw_angle / 0.01;
     return raw_angle;
 }
 
@@ -140,7 +144,7 @@ void angle_ctrl(Motor_t *motor, float angle)
     {
         if(motor->pid_flag)
         {
-            motor->actual_angle = get_angle(motor->actual_angle,motor->motor_dir); //获取实时角度
+            get_angle(motor,motor->motor_dir); //获取实时角度
             positionServo(angle ,motor);
             motor->pid_flag = 0;
             //终止PID

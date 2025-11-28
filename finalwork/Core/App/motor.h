@@ -30,7 +30,7 @@ typedef struct {
 void Motor_Init(Motor_t *motor);
 void Motor_Enable(Motor_t *motor);
 void positionServo(float ref, Motor_t *motor);
-float get_angle(float pre_angle, uint8_t dir);
+float get_angle(Motor_t *motor, uint8_t dir);
 void Motor_control(Motor_t *motor);
 void Motor_Disable(Motor_t *motor);
 
