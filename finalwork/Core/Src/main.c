@@ -116,10 +116,10 @@ int main(void)
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    Motor_control(&motor);
     motor.motor_dir = CLOCKWISE;
     dir_set(&motor);
-    angle_ctrl(&motor, 1.00);
+    angle_ctrl(&motor, 2.00);
+    while(1);
     Motor_Disable(&motor);
     Motor_control(&motor);
     

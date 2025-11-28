@@ -15,8 +15,8 @@ void Motor_Init(Motor_t *motor)
        PID_init(&motor->motor_pospid);
        PID_init(&motor->motor_speedpid);
        //设置两环pid的参数
-       PID_Set(&motor->motor_pospid, 15, 0.01, 1);  // KP  KI  KD
-       PID_Set(&motor->motor_speedpid, 15, 0.01, 1);  // KP  KI  KD
+       PID_Set(&motor->motor_pospid, 700, 5, 200);  // KP  KI  KD
+       PID_Set(&motor->motor_speedpid, 7, 0.1, 1);  // KP  KI  KD
        motor->TIM_PWMHandle = htim1;
        motor->TIM_EncoderHandle = htim2;
        motor->TIM_PWM_CH = TIM_CHANNEL_1;
@@ -28,12 +28,15 @@ void Motor_Init(Motor_t *motor)
 void Motor_Enable(Motor_t *motor)
 {
     motor->is_enable = 1;
+    HAL_GPIO_WritePin(GPIOA, STBY_Pin, 1);
 }
 
 //失能电机
 void Motor_Disable(Motor_t *motor)
 {
     motor->is_enable = 0;
+    HAL_GPIO_WritePin(GPIOA, STBY_Pin, 0);
+
 }
 //控制电机启动
 void Motor_control(Motor_t *motor)
@@ -69,7 +72,7 @@ void positionServo(float ref, Motor_t *motor)
 {
     motor->motor_pospid.ref = ref;
     motor->motor_pospid.fdb = motor->actual_angle;
-    PID_Calc(&motor->motor_pospid);
+    PID_Calc_p(&motor->motor_pospid);
     //PID_Calc_p(&motor->motor_pospid);
 
     motor->motor_speedpid.ref = motor->motor_pospid.output; //位置pid的输出结果作为速度pid期望
@@ -106,7 +109,7 @@ void speedServo(float ref, Motor_t *motor)
     motor->motor_speedpid.fdb = motor->actual_speed;
     PID_Calc(&motor->motor_speedpid);
     //打印参数
-    //printf("%.2f,%.2f\r\n",motor->motor_speedpid.fdb,motor->motor_speedpid.output);
+    printf("%.3f,%.3f,%.3f\r\n",motor->motor_speedpid.fdb,motor->motor_speedpid.output,ref);
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, motor->motor_speedpid.output);
 }
 
@@ -122,20 +125,20 @@ float get_angle(Motor_t *motor, uint8_t dir)
         raw_angle = 65535 - raw_angle;
     }
     //将计数改为角度
-    raw_angle =  raw_angle  /  (30 * 13 * 2) ;
+    raw_angle = raw_angle  /  (30 * 13 *4) ;
     motor->actual_angle += raw_angle;
-    motor->actual_speed = raw_angle / 0.01;
+    motor->actual_speed =  60 * raw_angle / 0.01;
     return raw_angle;
 }
+
 
 //获取电机实时速度
 float get_speed(Motor_t *motor)
 {
     float raw_angle = __HAL_TIM_GET_COUNTER(&htim2);
     __HAL_TIM_SET_COUNTER(&htim2,0);
-    float speed = 0;
-    speed = raw_angle/(30 * 13 * 2) / 0.01;
-    return speed;
+    motor->actual_speed = 60 * raw_angle / (30 * 13 *4) / 0.01;
+    return 0;
 }
 
 //角度控制
@@ -164,7 +167,7 @@ void speed_ctrl(Motor_t *motor,float speed)
     {
         if(motor->pid_flag)
         {
-            motor->actual_speed = get_speed(motor);
+            get_speed(motor);
             speedServo(speed, motor);
             motor->pid_flag = 0;
             //终止pid

@@ -16,7 +16,7 @@ typedef struct{
     float output;
     float outputMax;
     float outputMin;
- 
+    float ioutMax; //»ý·ÖÏÞ·ù
 }PID_t;
 
 void PID_init(PID_t *pid);

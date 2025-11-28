@@ -14,8 +14,8 @@ void PID_init(PID_t *pid)
     pid->error[1] = 0;
     pid->output = 0;
     pid->outputMax = 800;
-    pid->outputMin = 5;
- 
+    pid->outputMin = 0;
+    pid->ioutMax = 5000;
 }
 
 //PID参数设定
@@ -33,17 +33,31 @@ void PID_Calc_p(PID_t *pid)
 {
     pid->cur_error = pid->ref - pid->fdb;
     pid->iout += pid->cur_error;
+    
+    //积分限幅
+    if(pid->iout > pid->ioutMax)
+    {
+        pid->iout = pid->ioutMax;
+    }
+    else if(pid->iout < -pid->ioutMax)
+    {
+        pid->iout = -pid->ioutMax;
+    }
+    //输出计算
     pid->output = pid->KP * pid->cur_error + pid->KI * pid->iout + pid->KD * (pid->cur_error - pid->error[1]);
+    //误差更新
     pid->error[0] = pid->error[1];
-    pid->error[1] = pid->ref - pid->fdb;
+    pid->error[1] = pid->cur_error;
+    //输出限幅
     if(pid->output > pid->outputMax)
     {
         pid->output = pid->outputMax;
     }
-    if(pid->output < -pid->outputMax)
+    else if(pid->output < -pid->outputMax)
     {
         pid->output = -pid->outputMax;
     }
+    //死区终止
     if(fabs(pid->output) < pid->outputMin)
     {
         pid->output = 0;
