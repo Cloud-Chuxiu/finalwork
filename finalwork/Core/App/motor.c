@@ -15,7 +15,7 @@ void Motor_Init(Motor_t *motor)
        PID_init(&motor->motor_pospid);
        PID_init(&motor->motor_speedpid);
        //设置两环pid的参数
-       PID_Set(&motor->motor_pospid, 700, 5, 200);  // KP  KI  KD
+       PID_Set(&motor->motor_pospid, 700, 3, 3000);  // KP  KI  KD
        PID_Set(&motor->motor_speedpid, 7, 0.1, 1);  // KP  KI  KD
        motor->TIM_PWMHandle = htim1;
        motor->TIM_EncoderHandle = htim2;
@@ -24,11 +24,12 @@ void Motor_Init(Motor_t *motor)
        motor->TIM_Encoder_CH2 = TIM_CHANNEL_2;
 }
 
-//使能电机
+//使能电机 //自带初始化
 void Motor_Enable(Motor_t *motor)
 {
     motor->is_enable = 1;
     HAL_GPIO_WritePin(GPIOA, STBY_Pin, 1);
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
 }
 
 //失能电机
@@ -36,7 +37,7 @@ void Motor_Disable(Motor_t *motor)
 {
     motor->is_enable = 0;
     HAL_GPIO_WritePin(GPIOA, STBY_Pin, 0);
-
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
 }
 //控制电机启动
 void Motor_control(Motor_t *motor)
@@ -50,6 +51,7 @@ void Motor_control(Motor_t *motor)
         HAL_GPIO_WritePin(GPIOA, STBY_Pin, 0);
     }
 }
+
 
 //设定电机方向
 void dir_set(Motor_t *motor)
