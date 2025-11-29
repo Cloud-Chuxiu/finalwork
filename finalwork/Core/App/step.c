@@ -24,7 +24,8 @@ void step_dir_set(uint8_t dir)
 
 void step_set(float round)
 {
-    for(uint32_t i = 0; i < (uint32_t)round * 400 * 2; i++)
+    round = round * 400 * 2;
+    for(uint32_t i = 0; i < (uint32_t)round; i++)
     {
         HAL_GPIO_TogglePin(GPIOB, PUL_Pin);
         delay_us(500);
