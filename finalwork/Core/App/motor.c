@@ -12,11 +12,13 @@ void Motor_Init(Motor_t *motor)
        motor->overflowNum = 0;
        motor->total_count = 0;
        motor->last_count = 0;
+       //对两环pid进行初始化
        PID_init(&motor->motor_pospid);
        PID_init(&motor->motor_speedpid);
        //设置两环pid的参数
-       PID_Set(&motor->motor_pospid, 700, 3, 3000);  // KP  KI  KD
-       PID_Set(&motor->motor_speedpid, 7, 0.1, 1);  // KP  KI  KD
+       PID_Set(&motor->motor_pospid, 15, 0.02, 5);  // KP  KI  KD
+       PID_Set(&motor->motor_speedpid, 2, 0.1, 0);  // KP  KI  KD
+
        motor->TIM_PWMHandle = htim1;
        motor->TIM_EncoderHandle = htim2;
        motor->TIM_PWM_CH = TIM_CHANNEL_1;
@@ -52,7 +54,6 @@ void Motor_control(Motor_t *motor)
     }
 }
 
-
 //设定电机方向
 void dir_set(Motor_t *motor)
 {
@@ -83,7 +84,7 @@ void positionServo(float ref, Motor_t *motor)
     
    
     //打印参数
-    printf("%.3f,%.3f,%.3f\r\n",ref* 360,motor->motor_pospid.fdb * 360,motor->motor_pospid.output);
+    printf("%.3f,%.3f,%.3f,%.3f,%.3f\r\n",ref,motor->motor_pospid.fdb,motor->actual_speed,motor->motor_pospid.output,motor->motor_speedpid.output);
    
     //死区控制
 
@@ -119,7 +120,7 @@ void speedServo(float ref, Motor_t *motor)
 float get_angle(Motor_t *motor, uint8_t dir)
 {
     //获取原始计数
-    float raw_angle = (short)__HAL_TIM_GET_COUNTER(&htim2); //(short) ?
+    float raw_angle = (short)__HAL_TIM_GET_COUNTER(&htim2);
     __HAL_TIM_SET_COUNTER(&htim2,0);
     //防止溢出计算
     if(raw_angle > 32768)
@@ -127,9 +128,9 @@ float get_angle(Motor_t *motor, uint8_t dir)
         raw_angle = 65535 - raw_angle;
     }
     //将计数改为角度
-    raw_angle = raw_angle  /  (30 * 13 *4) ;
-    motor->actual_angle += raw_angle;
-    motor->actual_speed =  60 * raw_angle / 0.01;
+    raw_angle = raw_angle   /  (30 * 13 *4) ;  //计算结果为r
+    motor->actual_angle += raw_angle * 360;
+    motor->actual_speed =  60 * raw_angle / 0.01; //计算结果为 r/min
     return raw_angle;
 }
 

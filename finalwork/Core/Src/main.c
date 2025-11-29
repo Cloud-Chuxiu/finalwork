@@ -113,36 +113,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    HAL_Delay(500);
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    angle_ctrl(&motor, 2.00);
+    angle_ctrl(&motor, -360);
     Motor_Disable(&motor);
-        
+    while(1);
 
-
-    
-
-    // HAL_GPIO_WritePin(GPIOA, STBY_Pin, 1);
-    // HAL_GPIO_WritePin(GPIOA, AIN1_Pin, 1);
-    // HAL_GPIO_WritePin(GPIOA, AIN2_Pin, 0);
-    // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1 ,600);
-    // while(1);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     //转动顺序预设
     // angle_ctrl(motor,1);
