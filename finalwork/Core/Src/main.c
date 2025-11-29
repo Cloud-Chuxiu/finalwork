@@ -150,15 +150,15 @@ int main(void)
 
     HAL_Delay(500);
     step_dir_set(0);
-    step_set(0.5);
+    step_set(0.7);
 
-    while(1);
+    
 
     HAL_Delay(500);
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    angle_ctrl(&motor, -360);
+    angle_ctrl(&motor, -510);
     Motor_Disable(&motor);
 
 
