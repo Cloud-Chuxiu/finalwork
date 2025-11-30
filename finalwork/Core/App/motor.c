@@ -117,7 +117,7 @@ void speedServo(float ref, Motor_t *motor)
 }
 
 //获取电机实时角度 & 速度
-float get_angle(Motor_t *motor, uint8_t dir)
+float get_motorinf(Motor_t *motor, uint8_t dir)
 {
     //获取原始计数
     float raw_angle = (short)__HAL_TIM_GET_COUNTER(&htim2);
@@ -151,7 +151,9 @@ void angle_ctrl(Motor_t *motor, float angle)
     {
         if(motor->pid_flag)
         {
-            get_angle(motor,motor->motor_dir); //获取实时角度
+            get_motorinf
+            
+            (motor,motor->motor_dir); //获取实时角度
             positionServo(angle ,motor);
             motor->pid_flag = 0;
             //终止PID

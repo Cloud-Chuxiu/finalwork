@@ -35,8 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define DELAY_TIME 2
-0
+#define DELAY_TIME 15
 Motor_t motor;
 /* USER CODE END PD */
 
@@ -115,11 +114,21 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+    // HAL_GPIO_WritePin(GPIOA, AIN1_Pin, 0);
+    
+    // HAL_GPIO_WritePin(GPIOA, AIN2_Pin, 1);
+    // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 200);
+    // while(1);
     HAL_Delay(DELAY_TIME);
+    
+
+    
+
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    angle_ctrl(&motor, -510);
+    angle_ctrl(&motor, -507);
     Motor_Disable(&motor);
     
     
@@ -132,7 +141,7 @@ int main(void)
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    angle_ctrl(&motor, 35);
+    angle_ctrl(&motor, 40);
     Motor_Disable(&motor);
     
 
@@ -145,23 +154,26 @@ int main(void)
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    angle_ctrl(&motor, 570);
+    angle_ctrl(&motor, 568);
     Motor_Disable(&motor);
 
 
 
-    HAL_Delay(DELAY_TIME);
+    HAL_Delay(30);
     step_dir_set(0);
-    step_set(0.7);
+    step_set(0.8);
 
     
-
+    
     HAL_Delay(DELAY_TIME);
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
+    motor.motor_pospid.outputMax = 600;
+    motor.motor_speedpid.outputMax = 600;
     Motor_Enable(&motor);
-    angle_ctrl(&motor, -510);
+    angle_ctrl(&motor, -490);
     Motor_Disable(&motor);
+
 
 
 
