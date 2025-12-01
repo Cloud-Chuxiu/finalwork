@@ -156,7 +156,7 @@ int main(void)
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    angle_ctrl(&motor, 650);
+    angle_ctrl(&motor, 700);
     Motor_Disable(&motor);
 
 
