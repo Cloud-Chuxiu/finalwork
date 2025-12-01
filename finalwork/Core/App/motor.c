@@ -16,7 +16,7 @@ void Motor_Init(Motor_t *motor)
        PID_init(&motor->motor_pospid);
        PID_init(&motor->motor_speedpid);
        //设置两环pid的参数
-       PID_Set(&motor->motor_pospid, 15, 0.02, 5);  // KP  KI  KD
+       PID_Set(&motor->motor_pospid, 8, 0.01, 5);  // KP  KI  KD
        PID_Set(&motor->motor_speedpid, 2, 0.1, 0);  // KP  KI  KD
 
        motor->TIM_PWMHandle = htim1;

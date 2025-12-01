@@ -120,19 +120,21 @@ int main(void)
     // HAL_GPIO_WritePin(GPIOA, AIN2_Pin, 1);
     // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 200);
     // while(1);
-    HAL_Delay(DELAY_TIME);
+    HAL_Delay(1000);
     
 
     
 
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
+    motor.motor_pospid.outputMax = 600;
+    motor.motor_speedpid.outputMax = 600;
     Motor_Enable(&motor);
-    angle_ctrl(&motor, -507);
+    angle_ctrl(&motor, -517);
     Motor_Disable(&motor);
     
     
-    HAL_Delay(DELAY_TIME);
+    HAL_Delay(3);
     step_dir_set(0);
     step_set(1.1);
 
@@ -141,11 +143,11 @@ int main(void)
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    angle_ctrl(&motor, 40);
+    angle_ctrl(&motor, 43);
     Motor_Disable(&motor);
     
 
-    HAL_Delay(DELAY_TIME);
+    HAL_Delay(3);
     step_dir_set(1);
     step_set(2.2);
 
@@ -154,12 +156,12 @@ int main(void)
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    angle_ctrl(&motor, 568);
+    angle_ctrl(&motor, 588);
     Motor_Disable(&motor);
 
 
 
-    HAL_Delay(30);
+    HAL_Delay(3);
     step_dir_set(0);
     step_set(0.8);
 
@@ -168,8 +170,8 @@ int main(void)
     HAL_Delay(DELAY_TIME);
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
-    motor.motor_pospid.outputMax = 600;
-    motor.motor_speedpid.outputMax = 600;
+    motor.motor_pospid.outputMax = 800;
+    motor.motor_speedpid.outputMax = 800;
     Motor_Enable(&motor);
     angle_ctrl(&motor, -490);
     Motor_Disable(&motor);
