@@ -13,7 +13,7 @@ void PID_init(PID_t *pid)
     pid->error[0] = 0;
     pid->error[1] = 0;
     pid->output = 0;
-    pid->outputMax = 405;
+    pid->outputMax = 600;
     pid->outputMin = 5;
     pid->ioutMax = 5000;
 }

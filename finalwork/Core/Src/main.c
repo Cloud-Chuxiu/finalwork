@@ -130,7 +130,7 @@ int main(void)
     motor.motor_pospid.outputMax = 600;
     motor.motor_speedpid.outputMax = 600;
     Motor_Enable(&motor);
-    angle_ctrl(&motor, -517);
+    angle_ctrl(&motor, -523);
     Motor_Disable(&motor);
     
     
@@ -156,7 +156,7 @@ int main(void)
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
     Motor_Enable(&motor);
-    angle_ctrl(&motor, 588);
+    angle_ctrl(&motor, 6);
     Motor_Disable(&motor);
 
 
@@ -170,8 +170,8 @@ int main(void)
     HAL_Delay(DELAY_TIME);
     __HAL_TIM_SET_COUNTER(&htim2,0);
     Motor_Init(&motor);
-    motor.motor_pospid.outputMax = 800;
-    motor.motor_speedpid.outputMax = 800;
+    motor.motor_pospid.outputMax = 750;
+    motor.motor_speedpid.outputMax = 750;
     Motor_Enable(&motor);
     angle_ctrl(&motor, -490);
     Motor_Disable(&motor);
